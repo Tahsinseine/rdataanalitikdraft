@@ -1,0 +1,117 @@
+---
+title: "Topik 7 Regresi Linear"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
+
+```
+
+Analisis regresi adalah salah satu alat yang paling banyak digunakan dalam penelitian kuantitatif yang digunakan untuk menganalisis hubungan antar variabel.
+
+-   Satu atau lebih variabel dianggap sebagai variabel penjelas, dan yang lainnya dianggap sebagai variabel dependen.
+
+-   Secara umum regresi linier digunakan untuk memprediksi variabel dependen (regressand) yang kontinu dari sejumlah variabel independen (regressor) dengan asumsi bahwa hubungan antara variabel dependen dan independen adalah linier.
+
+## 7.1 Data Preprosesi
+
+-   Unduh data stok menggunakan paket quantmod R
+-   Mengonversi data menjadi pengembalian
+-   Hasilkan beberapa statistik deskriptif
+-   Beberapa plot
+-   Data
+
+```{r}
+# Run the following to download and save the data, this should be
+# done once and when updating the time period
+library(quantmod)
+library(pander)
+library(xts)
+library(TTR)
+# download stock
+BHP = getSymbols("BHP.AX", from = "2019-01-01", to = "2021-07-31", auto.assign = FALSE)
+# download index
+ASX = getSymbols("^AXJO", from = "2019-01-01", to = "2021-07-31", auto.assign = FALSE)
+# save both in rds (to be used in the TA chapter)
+saveRDS(BHP, file = "data/bhp_prices.rds")
+saveRDS(ASX, file = "data/asx200.rds")
+```
+
+-   Ubah ke pengembalian
+
+```{r}
+library(quantmod)
+library(pander)
+library(xts)
+library(TTR)
+# load data from the saved files (not required if we execute the
+# chunk above)
+BHP = readRDS("data/bhp_prices.rds")
+ASX = readRDS("data/asx200.rds")
+# using close prices
+bhp2 = BHP$BHP.AX.Close
+asx2 = ASX$AXJO.Close
+# covert to returns
+
+bhp_ret = dailyReturn(bhp2, type = "log")
+asx_ret = dailyReturn(asx2, type = "log")
+
+# merge the two with 'inner' join to get the same dates
+data_lm1 = merge.xts(bhp_ret, asx_ret, join = "inner")
+# convert to data frame
+data_lm2 = data.frame(index(data_lm1), data_lm1$daily.returns, data_lm1$daily.returns.1)
+# change column names
+colnames(data_lm2) = c("Date", "bhp", "asx")
+head(data_lm2)  #there are row names which can be removed if required
+```
+
+```{r}
+library(pastecs)
+desc_stat1 = stat.desc(data_lm2[, 2:3], norm = TRUE)
+pander(desc_stat1, caption = "Descriptive Statistics", split.table = Inf)
+```
+
+## 7.2 Visualisasi
+
+```{r}
+library(ggplot2)
+library(tidyr)
+
+p1 = ggplot(data_lm2, aes(asx, bhp))
+p1 + geom_point(colour = "brown") + geom_smooth(method = "lm") + theme_minimal() +
+    labs(title = "Scatter plot of BHPvsASX and Linear Fit")
+```
+
+```{r}
+p2 = ggplot(data_lm2, aes(Date))
+p2 + geom_line(aes(y = bhp, color = "bhp"), size = 1, lty = 1) + geom_line(aes(y = asx,
+    color = "asx"), size = 1, lty = 2) + scale_color_discrete("Asset") +
+    theme_minimal() + labs("Line Chart of Returns")
+```
+
+## 7.3 Analisis Regresi menggunakan lm
+
+-   Gunakan model SIM method
+
+```{r}
+lreg1 = lm(formula = bhp ~ asx, data = data_lm2)
+summary(lreg1)  #to generate main results
+```
+
+```{r}
+pander(lreg1, add.significance.stars = T)  #to tabulate
+```
+
+-   Gunakan Stargazer untuk menampilkan resuly
+
+```{r}
+library(stargazer)
+stargazer(lreg1, type = "text", title = "Regression Results")
+```
+
+-   Diagnostik Plot
+
+```{r}
+par(mfrow = c(2, 2))
+plot(lreg1)
+```

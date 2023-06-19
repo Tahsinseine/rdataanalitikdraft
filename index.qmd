@@ -1,0 +1,334 @@
+---
+title: "Topik 4 Eksplorasi Data"
+---
+```{r setup, include=FALSE} 
+knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
+
+```
+
+
+Kabar baiknya adalah bahwa statistik deskriptif ini memberi kita ringkasan yang dapat dikelola dan bermakna dari fenomena yang mendasarinya. Itulah isi bab ini. Kabar buruknya adalah bahwa penyederhanaan apa pun mengundang penyalahgunaan. Statistik deskriptif bisa secara teknis akurat namun sangat menyesatkan.
+
+## 4.1 Data Preprocessing
+
+Sekarang kita akan membahas beberapa metode manipulasi data untuk membersihkan dataset, menggabungkan berbagai dataset atau mengekstrak variabel dari bingkai data sebelum kita melompat ke beberapa dasar pemrograman.
+
+### 4.1.1 Extracting Data
+
+Bingkai data adalah struktur data yang paling banyak digunakan di R karena menawarkan lebih banyak fleksibilitas dalam cara mereka dapat menangani data.
+
+Mari kita lihat beberapa metode untuk mengekstrak data dari bingkai data. Kita akan menggunakan contoh dataset yang disebut `us_stocks.csv`\
+Mari kita impor menggunakan
+
+`read.csv`
+
+```{r}
+data_stocks = read.csv(file ="data/us_stocks.csv", header = TRUE)
+head(data_stocks)
+
+```
+
+Fungsi names atau colnames digunakan untuk mengakses nama kolom (atau variabel) dalam kumpulan data seperti yang ditunjukkan di bawah ini.
+
+Fungsi row.names dapat digunakan untuk mengakses nama baris (jika ada) dari himpunan data
+
+```{r}
+names(data_stocks)
+
+```
+
+```{r}
+colnames(data_stocks)
+```
+
+Variabel data tertentu dapat diakses menggunakan nama atau indeks (nomor kolom) dalam bingkai data.
+
+Untuk memilih penggunaan kolom apa pun \$ simbol diikuti dengan nama kolom atau namanya dalam tanda kurung siku seperti yang ditunjukkan pada contoh di bawah ini
+
+```{r}
+msft_prices1 = data_stocks$MSFT  #the data is returned as a vector
+head(msft_prices1)
+```
+
+```{r}
+msft_prices2 = data_stocks[["MSFT"]]  #the data is returned as a vector
+head(msft_prices2)
+```
+
+```{r}
+# the following returns data as a data frame
+msft_prices3 = data_stocks["MSFT"]  #can also be used to access multiple columns
+head(msft_prices3)
+```
+
+Kolom data ini juga dapat diakses seperti matriks, menggunakan indeks matriks.
+
+Metode ini dapat mengembalikan baris lengkap, kolom lengkap, atau hanya elemen dari himpunan data.
+
+```{r}
+# MSFT is in the second column and leaving the row index blank returns all the
+# rows for the particular column
+
+msft_prices4 = data_stocks[, 2]
+
+head(msft_prices4)
+```
+
+```{r}
+# all the elements in row 4
+data_stocks[4, ]
+```
+
+### 4.1.2 Combining Data Frames
+
+Mungkin diperlukan untuk menggabungkan dua bingkai data selama pemrosesan data.
+
+Ini dapat dilakukan dengan menumpuknya baris demi baris atau menggabungkannya dengan kolom menggunakan rbind dan cbind masing-masing.
+
+Saat menggunakan cbind Jumlah baris dalam kolom yang digabungkan harus sama panjangnya juga di\
+rbind Jumlah kolom himpunan data yang digabungkan harus sama. Mari kita lihat contohnya :
+
+```{r}
+# First create a vector having the returns for msft
+msft_ret = 100 * diff(log(data_stocks$MSFT))
+# combine the vector with the data
+
+```
+
+```{r}
+# different length
+length(msft_ret)
+```
+
+```{r}
+length(data_stocks$MSFT)
+```
+
+```{r}
+# add one more value to vector msft_ret
+msft_ret = c(0, msft_ret)
+# check the length
+length(msft_ret)
+```
+
+```{r}
+# lets combine now (it should work)
+data_stocks_r = cbind(data_stocks, MSFT_RET = msft_ret)
+head(data_stocks_r)  #shows one more column added to the data
+```
+
+```{r}
+# create two dataframes from data_stocks
+data_r1 = data_stocks[1:10, ]  #first 10 rows
+data_r2 = data_stocks[2775:2784, ]  #last 10 rows
+data_stocks_rbind = rbind(data_r1, data_r2)
+print(data_stocks_rbind)
+```
+
+### 4.1.3 Sub setting and Logical Data Selection
+
+Misalkan kita ingin mengekstrak data dengan karakteristik tertentu seperti rentang nilai, dll.
+
+Ini dapat dicapai dengan menggunakan pernyataan logis dalam notasi braket.
+
+Contoh berikut mengilustrasikan. Lihat help("\>") untuk melihat lebih banyak operator perbandingan.
+
+```{r}
+# select all rows with Apple prices above 100
+data_aaplgr100 = data_stocks[data_stocks$AAPL > 100, ]
+head(data_aaplgr100)
+```
+
+```{r}
+min(data_aaplgr100$AAPL)  #check if the prices are above 100
+```
+
+```{r}
+# this give NA as the minimum which indicates that data frame has NA lets
+# remove NAs from data_aaplgr100 using na.omit function
+data_aaplgr100 = na.omit(data_aaplgr100)
+# now check the minimum again
+min(data_aaplgr100$AAPL)
+```
+
+Fungsi yang digunakan dalam contoh di atas dapat digunakan untuk menghapus semua nilai kosong dalam himpunan data.
+
+```{r}
+head(data_stocks)  #notice NAs in GOOG
+```
+
+```{r}
+data_stocks_googlena = data_stocks[!is.na(data_stocks$GOOG), ]
+head(data_stocks_googlena)  #after removing NAs
+```
+
+```{r}
+# the above can still leave NAs in other columns use na.omit to remove all the
+# blank data
+data_stocks_naomit = na.omit(data_stocks)
+```
+
+Mungkin ada persyaratan dalam pra pemrosesan data di mana seseorang mungkin harus memilih data dalam suatu rentang.
+
+Contoh berikut memilih data di mana harga MSFT berada di antara 20 dan 30.
+
+& adalah operator Logika di R, lihat help("&") untuk melihat detail selengkapnya dan operator Logika lainnya.
+
+```{r}
+data_msft = data_stocks_naomit[data_stocks_naomit$MSFT <= 30 & data_stocks_naomit$MSFT >
+    20, ]
+min(data_msft$MSFT)  #check 
+```
+
+```{r}
+args(subset.data.frame)
+```
+
+```{r}
+aaplgr100 = subset(data_stocks_naomit, AAPL > 100)
+head(aaplgr100)
+```
+
+```{r}
+min(aaplgr100$AAPL)
+```
+
+## 4.2 Data Transformation from Wide to Long (or vice versa)
+
+Terkadang diperlukan untuk mengubah data format lebar menjadi panjang, yang sering diperlukan untuk bekerja dengan paket ggplot2 (dibahas di bagian grafik) Paket R tidyr menyediakan dua fungsi pivot_longer() dan pivot_wider() untuk mengubah data menjadi format panjang atau lebar. Mari kita konversi data saham ke format panjang
+
+```{r}
+library(tidyr)
+
+FinData_long = pivot_longer(data = data_stocks, cols = -Date, names_to = "Stock",
+    values_to = "Price")
+head(FinData_long)
+```
+
+```{r}
+FinData_wide = pivot_wider(FinData_long, names_from = Stock, values_from = Price)
+head(FinData_wide)
+```
+
+## 4.3 Summary Statistics
+
+statistik deskriptif ini memberi kita ringkasan yang dapat dikelola dan bermakna dari fenomena yang mendasarinya. Itulah isi bab ini. Kabar buruknya adalah bahwa penyederhanaan apa pun mengundang penyalahgunaan.
+
+Sangat mudah untuk menghitung statistik ringkasan dasar dalam R, sebagian besar fungsi diberi nama sesuai dengan apa yang mereka lakukan.
+
+Contoh berikut menunjukkan cara menghitung ukuran statistik dalam tabel-1 untuk harga Dow Jones dalam file data data_fin.csv
+
+```{r}
+# change the working directory to the folder containing data_fin.csv or provide
+# the full path with the filename
+data_stocks = read.csv("data/data_fin.csv")  #import data
+head(data_stocks)
+```
+
+```{r}
+DJI = data_stocks$DJI
+DJI = na.omit(DJI)  #remove NAs as it will affect the calculations
+# Arithmetic mean
+mean(DJI)
+```
+
+```{r}
+# Geometric mean
+exp(mean(log(DJI)))
+```
+
+```{r}
+# median
+median(DJI)
+# variance & standard deviation
+var(DJI)
+sd(DJI)
+# interquantile range and few quantiles
+IQR(DJI)
+quantile(DJI)
+# skewness and kurtosis skewness and kurtosis functions are not available in R
+# core library but in library e1071 (there are other packages which have
+# functions for skewness and kurtosis try ??kurtosis or search for the function
+# on RSearch.
+library(e1071)
+skewness(DJI)
+kurtosis(DJI)
+```
+
+Fungsi summary di R memberikan beberapa ringkasan dasar yaitu, nilai minimum, nilai maksimum, nilai median dan kuartil untuk satu variabel atau dataset. Fungsi summary dapat digunakan sebagai berikut :
+
+```{r}
+# summary of one column/variable in a dataframe
+summary(DJI)
+# summary of whole dataset excluding the time column
+summary(data_stocks[, c(2:21)])
+```
+
+### 4.3.1 Example-Descriptive Statistics of Stock Returns
+
+Dalam contoh ini kita akan menggunakan R untuk menghitung statistik deskriptif untuk pengembalian 10 saham dalam file datasets data_fin.csv
+
+• Pertama-tama kita akan mengimpor dataset ke R menggunakan fungsi read.csv
+
+```{r}
+data_cs1 = read.csv("data/data_fin.csv")
+head(data_cs1)  #check the imported data
+```
+
+Terapkan fungsi ke dengan tanggal sebagai karakter dan kemudian setelah mengubah tanggal ke kelas Tanggal.
+
+```{r}
+# selecting first 10 price series including the data column
+data_cs1.1 = data_cs1[, c(1:11)]
+# data cleaning-remove NAs
+data_cs1.1 = na.omit(data_cs1.1)
+colnames(data_cs1.1)  # see the columns present in the data
+summary(data_cs1.1)  #notice the Date variable
+# check class of dates which will be factor ( treated as factor by default)\t
+class(data_cs1.1$Date)
+# convert dates to class Date
+data_cs1.1$Date = as.Date(data_cs1.1$Date, format = "%d/%m/%Y")
+class(data_cs1.1$Date)
+summary(data_cs1.1)  #notice the Date variable
+```
+
+Ubah harga menjadi pengembalian
+
+```{r}
+d2 = as.data.frame(sapply(data_cs1.1[2:11], function(x) diff(log(x)) * 100))  #note it will be one less
+# create a different dataframe with returns
+data_stocks_ret = as.data.frame(cbind(Date = data_cs1.1$Date[2:length(data_cs1.1$Date)],
+    d2), stringsAsFactors = FALSE, row.names = NULL)
+# visual inspection
+head(data_stocks_ret)
+```
+
+#### 4.3.1.1 Using the Describe function
+
+Paket psych dilengkapi dengan fungsi yang disebut describe yang menghasilkan statistik deskriptif untuk semua vektor data (kolom) dalam bingkai data, matriks atau vektor.
+
+```{r}
+library(psych)  #load the required package
+args(describe)  #arguments for describe function
+# use describe to calculate descriptive stats for data_cs1.1r
+desc1 = describe(data_stocks_ret[, 2:11])  #note we dont pass the date column
+# check the output
+head(desc1)
+# the above output is in long format, we can transpose it get column format
+desc1.t = t(desc1)
+head(desc1.t)
+```
+
+Statistik deskriptif yang dihasilkan di atas memberikan mean, median, standar deviasi, trimmed mean (dipangkas), median, mad (median absolut deviasi dari median), minimum (min), maksimum (max), skewness (miring), kurtosis dan kesalahan standar (se).
+
+Ini dapat dengan mudah ditransfer ke file CSV atau file teks. Satu baris kode berikut mentransfer statistik deskriptif ke file CSV yang kemudian dapat diimpor ke file word atau lateks sesuai kebutuhan.
+
+```{r}
+require(pastecs)  # note library and require can both be used to include a package
+# detach the package pastecs its useful to avoid any conflicts (e.g psych and
+# Hmisc have 'describe' function with two different behaviours
+detach("package:psych", unload = TRUE)
+# use stat.desc in with default arguments
+desc2 = stat.desc(data_stocks_ret[, 2:11], norm = TRUE)
+desc2  #note skewness/kurtosis
+```
