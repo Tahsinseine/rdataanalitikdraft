@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.361">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Materi (R) Data Analitik - Topik 4 Eksplorasi Data</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar docked nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Materi (R) Data Analitik</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/" rel="" target=""><i class="bi bi-github" role="img">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Basics</a></li><li class="breadcrumb-item"><a href="./index.html">Topik 4 Eksplorasi Data</a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Basics</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Topik 4 Eksplorasi Data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+ <span class="menu-text">basics-knitr.qmd</span>
+  </li>
+          <li class="sidebar-item">
+ <span class="menu-text">basics-jupyter.qmd</span>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Layout</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+ <span class="menu-text">layout.qmd</span>
+  </li>
+          <li class="sidebar-item">
+ <span class="menu-text">layout-knitr.qmd</span>
+  </li>
+          <li class="sidebar-item">
+ <span class="menu-text">layout-jupyter.qmd</span>
+  </li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#data-preprocessing" id="toc-data-preprocessing" class="nav-link active" data-scroll-target="#data-preprocessing">4.1 Data Preprocessing</a>
+  <ul class="collapse">
+  <li><a href="#extracting-data" id="toc-extracting-data" class="nav-link" data-scroll-target="#extracting-data">4.1.1 Extracting Data</a></li>
+  <li><a href="#combining-data-frames" id="toc-combining-data-frames" class="nav-link" data-scroll-target="#combining-data-frames">4.1.2 Combining Data Frames</a></li>
+  <li><a href="#sub-setting-and-logical-data-selection" id="toc-sub-setting-and-logical-data-selection" class="nav-link" data-scroll-target="#sub-setting-and-logical-data-selection">4.1.3 Sub setting and Logical Data Selection</a></li>
+  </ul></li>
+  <li><a href="#data-transformation-from-wide-to-long-or-vice-versa" id="toc-data-transformation-from-wide-to-long-or-vice-versa" class="nav-link" data-scroll-target="#data-transformation-from-wide-to-long-or-vice-versa">4.2 Data Transformation from Wide to Long (or vice versa)</a></li>
+  <li><a href="#summary-statistics" id="toc-summary-statistics" class="nav-link" data-scroll-target="#summary-statistics">4.3 Summary Statistics</a>
+  <ul class="collapse">
+  <li><a href="#example-descriptive-statistics-of-stock-returns" id="toc-example-descriptive-statistics-of-stock-returns" class="nav-link" data-scroll-target="#example-descriptive-statistics-of-stock-returns">4.3.1 Example-Descriptive Statistics of Stock Returns</a></li>
+  </ul></li>
+  <li><a href="#tu-ahajaja-mama" id="toc-tu-ahajaja-mama" class="nav-link" data-scroll-target="#tu-ahajaja-mama">Tu ahajaja mama</a>
+  <ul class="collapse">
+  <li><a href="#ajaamm" id="toc-ajaamm" class="nav-link" data-scroll-target="#ajaamm">ajaamm</a></li>
+  </ul></li>
+  <li><a href="#tu-ahajaja-mama-1" id="toc-tu-ahajaja-mama-1" class="nav-link" data-scroll-target="#tu-ahajaja-mama-1">2 Tu ahajaja mama</a>
+  <ul class="collapse">
+  <li><a href="#ajaamm-1" id="toc-ajaamm-1" class="nav-link" data-scroll-target="#ajaamm-1">2.1 ajaamm</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Topik 4 Eksplorasi Data</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>The good news is that these descriptive statistics give us a manageable and meaningful summary of the underlying phenomenon. That’s what this chapter is about. The bad news is that any simplification invites abuse. Descriptive statistics can be like online dating profiles: technically accurate and yet pretty darn misleading. -Charles Wheelan</p>
+<section id="data-preprocessing" class="level2">
+<h2 class="anchored" data-anchor-id="data-preprocessing">4.1 Data Preprocessing</h2>
+<p>xkkmxkhe Seine is a 777-kilometre-long (483 mi) river in northern France.</p>
+<section id="extracting-data" class="level3">
+<h3 class="anchored" data-anchor-id="extracting-data">4.1.1 Extracting Data</h3>
+<p>Data frames are the most used data structures in R as they offer more flexibility in the way they can handle data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>data_stocks <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="at">file =</span><span class="st">"data/us_stocks.csv"</span>, <span class="at">header =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data_stocks)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       Date  MSFT    IBM  AAPL   MCD    PG GOOG
+1 2/01/2002 33.52 121.50 11.65 26.49 40.00   NA
+2 3/01/2002 34.62 123.66 11.79 26.79 39.62   NA
+3 4/01/2002 34.45 125.60 11.84 26.99 39.22   NA
+4 7/01/2002 34.28 124.05 11.45 27.20 38.78   NA
+5 8/01/2002 34.69 124.70 11.30 27.36 38.88   NA
+6 9/01/2002 34.36 124.49 10.82 26.88 38.60   NA</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(data_stocks)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Date" "MSFT" "IBM"  "AAPL" "MCD"  "PG"   "GOOG"</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(data_stocks)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Date" "MSFT" "IBM"  "AAPL" "MCD"  "PG"   "GOOG"</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>msft_prices1 <span class="ot">=</span> data_stocks<span class="sc">$</span>MSFT  <span class="co">#the data is returned as a vector</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(msft_prices1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 33.52 34.62 34.45 34.28 34.69 34.36</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>msft_prices2 <span class="ot">=</span> data_stocks[[<span class="st">"MSFT"</span>]]  <span class="co">#the data is returned as a vector</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(msft_prices2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 33.52 34.62 34.45 34.28 34.69 34.36</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the following returns data as a data frame</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>msft_prices3 <span class="ot">=</span> data_stocks[<span class="st">"MSFT"</span>]  <span class="co">#can also be used to access multiple columns</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(msft_prices3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   MSFT
+1 33.52
+2 34.62
+3 34.45
+4 34.28
+5 34.69
+6 34.36</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># MSFT is in the second column and leaving the row index blank returns all the</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># rows for the particular column</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>msft_prices4 <span class="ot">=</span> data_stocks[, <span class="dv">2</span>]</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(msft_prices4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 33.52 34.62 34.45 34.28 34.69 34.36</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># all the elements in row 4</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>data_stocks[<span class="dv">4</span>, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       Date  MSFT    IBM  AAPL  MCD    PG GOOG
+4 7/01/2002 34.28 124.05 11.45 27.2 38.78   NA</code></pre>
+</div>
+</div>
+</section>
+<section id="combining-data-frames" class="level3">
+<h3 class="anchored" data-anchor-id="combining-data-frames">4.1.2 Combining Data Frames</h3>
+<p>It may be required to combine two data frames during a data processing.</p>
+<p>This can be done by stacking them row by row or combining them by columns using r</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># First create a vector having the returns for msft</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>msft_ret <span class="ot">=</span> <span class="dv">100</span> <span class="sc">*</span> <span class="fu">diff</span>(<span class="fu">log</span>(data_stocks<span class="sc">$</span>MSFT))</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co"># combine the vector with the data</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># different length</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(msft_ret)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2783</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(data_stocks<span class="sc">$</span>MSFT)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2784</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># add one more value to vector msft_ret</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>msft_ret <span class="ot">=</span> <span class="fu">c</span>(<span class="dv">0</span>, msft_ret)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="co"># check the length</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(msft_ret)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2784</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># lets combine now (it should work)</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>data_stocks_r <span class="ot">=</span> <span class="fu">cbind</span>(data_stocks, <span class="at">MSFT_RET =</span> msft_ret)</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data_stocks_r)  <span class="co">#shows one more column added to the data</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       Date  MSFT    IBM  AAPL   MCD    PG GOOG   MSFT_RET
+1 2/01/2002 33.52 121.50 11.65 26.49 40.00   NA  0.0000000
+2 3/01/2002 34.62 123.66 11.79 26.79 39.62   NA  3.2289274
+3 4/01/2002 34.45 125.60 11.84 26.99 39.22   NA -0.4922552
+4 7/01/2002 34.28 124.05 11.45 27.20 38.78   NA -0.4946904
+5 8/01/2002 34.69 124.70 11.30 27.36 38.88   NA  1.1889367
+6 9/01/2002 34.36 124.49 10.82 26.88 38.60   NA -0.9558364</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create two dataframes from data_stocks</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>data_r1 <span class="ot">=</span> data_stocks[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, ]  <span class="co">#first 10 rows</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>data_r2 <span class="ot">=</span> data_stocks[<span class="dv">2775</span><span class="sc">:</span><span class="dv">2784</span>, ]  <span class="co">#last 10 rows</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>data_stocks_rbind <span class="ot">=</span> <span class="fu">rbind</span>(data_r1, data_r2)</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(data_stocks_rbind)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>           Date  MSFT    IBM   AAPL   MCD    PG   GOOG
+1     2/01/2002 33.52 121.50  11.65 26.49 40.00     NA
+2     3/01/2002 34.62 123.66  11.79 26.79 39.62     NA
+3     4/01/2002 34.45 125.60  11.84 26.99 39.22     NA
+4     7/01/2002 34.28 124.05  11.45 27.20 38.78     NA
+5     8/01/2002 34.69 124.70  11.30 27.36 38.88     NA
+6     9/01/2002 34.36 124.49  10.82 26.88 38.60     NA
+7    10/01/2002 34.64 122.14  10.62 26.81 38.46     NA
+8    11/01/2002 34.30 120.31  10.52 26.34 38.60     NA
+9    14/01/2002 34.24 118.05  10.58 26.02 39.35     NA
+10   15/01/2002 34.78 118.85  10.85 26.20 39.82     NA
+2775 17/12/2012 27.10 193.62 518.83 89.91 69.93 720.78
+2776 18/12/2012 27.56 195.69 533.90 90.52 69.97 721.07
+2777 19/12/2012 27.31 195.08 526.31 89.71 69.34 720.11
+2778 20/12/2012 27.68 194.77 521.73 90.04 69.82 722.36
+2779 21/12/2012 27.45 193.42 519.33 90.18 68.72 715.63
+2780 24/12/2012 27.06 192.40 520.17 89.29 68.52 709.50
+2781 26/12/2012 26.86 191.95 513.00 88.74 68.00 708.87
+2782 27/12/2012 26.96 192.71 515.06 88.72 67.97 706.29
+2783 28/12/2012 26.55 189.83 509.59 87.58 67.15 700.01
+2784 31/12/2012 26.71 191.55 532.17 88.21 67.89 707.38</code></pre>
+</div>
+</div>
+</section>
+<section id="sub-setting-and-logical-data-selection" class="level3">
+<h3 class="anchored" data-anchor-id="sub-setting-and-logical-data-selection">4.1.3 Sub setting and Logical Data Selection</h3>
+<p>It may be required to combine two data frames during a data processing. This can be done by stacking them ro</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># select all rows with Apple prices above 100</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>data_aaplgr100 <span class="ot">=</span> data_stocks[data_stocks<span class="sc">$</span>AAPL <span class="sc">&gt;</span> <span class="dv">100</span>, ]</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data_aaplgr100)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          Date  MSFT    IBM   AAPL   MCD    PG   GOOG
+1342 2/05/2007 30.61 102.22 100.39 50.02 62.37 465.78
+1343 3/05/2007 30.97 102.80 100.40 49.91 62.00 473.23
+1344 4/05/2007 30.56 102.96 100.81 49.92 62.41 471.12
+1345 7/05/2007 30.71 103.16 103.92 49.50 62.18 467.27
+1346 8/05/2007 30.75 103.29 105.06 49.32 61.75 466.81
+1347 9/05/2007 30.78 104.38 106.88 49.84 62.01 469.25</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">min</span>(data_aaplgr100<span class="sc">$</span>AAPL)  <span class="co">#check if the prices are above 100</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] NA</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># this give NA as the minimum which indicates that data frame has NA lets</span></span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="co"># remove NAs from data_aaplgr100 using na.omit function</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>data_aaplgr100 <span class="ot">=</span> <span class="fu">na.omit</span>(data_aaplgr100)</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="co"># now check the minimum again</span></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="fu">min</span>(data_aaplgr100<span class="sc">$</span>AAPL)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 100.06</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data_stocks)  <span class="co">#notice NAs in GOOG</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       Date  MSFT    IBM  AAPL   MCD    PG GOOG
+1 2/01/2002 33.52 121.50 11.65 26.49 40.00   NA
+2 3/01/2002 34.62 123.66 11.79 26.79 39.62   NA
+3 4/01/2002 34.45 125.60 11.84 26.99 39.22   NA
+4 7/01/2002 34.28 124.05 11.45 27.20 38.78   NA
+5 8/01/2002 34.69 124.70 11.30 27.36 38.88   NA
+6 9/01/2002 34.36 124.49 10.82 26.88 38.60   NA</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>data_stocks_googlena <span class="ot">=</span> data_stocks[<span class="sc">!</span><span class="fu">is.na</span>(data_stocks<span class="sc">$</span>GOOG), ]</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data_stocks_googlena)  <span class="co">#after removing NAs</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          Date  MSFT   IBM  AAPL   MCD    PG   GOOG
+663 19/08/2004 27.12 84.89 15.36 26.60 54.48 100.34
+664 20/08/2004 27.20 85.25 15.40 27.07 54.85 108.31
+665 23/08/2004 27.24 84.65 15.54 26.64 54.75 109.40
+666 24/08/2004 27.24 84.71 15.98 26.87 54.95 104.87
+667 25/08/2004 27.55 85.07 16.52 26.95 55.30 106.00
+668 26/08/2004 27.44 84.69 17.33 27.10 55.70 107.91</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the above can still leave NAs in other columns use na.omit to remove all the</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="co"># blank data</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>data_stocks_naomit <span class="ot">=</span> <span class="fu">na.omit</span>(data_stocks)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>data_msft <span class="ot">=</span> data_stocks_naomit[data_stocks_naomit<span class="sc">$</span>MSFT <span class="sc">&lt;=</span> <span class="dv">30</span> <span class="sc">&amp;</span> data_stocks_naomit<span class="sc">$</span>MSFT <span class="sc">&gt;</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>    <span class="dv">20</span>, ]</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="fu">min</span>(data_msft<span class="sc">$</span>MSFT)  <span class="co">#check </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 20.06</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">args</span>(subset.data.frame)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>function (x, subset, select, drop = FALSE, ...) 
+NULL</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>aaplgr100 <span class="ot">=</span> <span class="fu">subset</span>(data_stocks_naomit, AAPL <span class="sc">&gt;</span> <span class="dv">100</span>)</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(aaplgr100)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          Date  MSFT    IBM   AAPL   MCD    PG   GOOG
+1342 2/05/2007 30.61 102.22 100.39 50.02 62.37 465.78
+1343 3/05/2007 30.97 102.80 100.40 49.91 62.00 473.23
+1344 4/05/2007 30.56 102.96 100.81 49.92 62.41 471.12
+1345 7/05/2007 30.71 103.16 103.92 49.50 62.18 467.27
+1346 8/05/2007 30.75 103.29 105.06 49.32 61.75 466.81
+1347 9/05/2007 30.78 104.38 106.88 49.84 62.01 469.25</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">min</span>(aaplgr100<span class="sc">$</span>AAPL)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 100.06</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="data-transformation-from-wide-to-long-or-vice-versa" class="level2">
+<h2 class="anchored" data-anchor-id="data-transformation-from-wide-to-long-or-vice-versa">4.2 Data Transformation from Wide to Long (or vice versa)</h2>
+<p>It may be</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>FinData_long <span class="ot">=</span> <span class="fu">pivot_longer</span>(<span class="at">data =</span> data_stocks, <span class="at">cols =</span> <span class="sc">-</span>Date, <span class="at">names_to =</span> <span class="st">"Stock"</span>,</span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"Price"</span>)</span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(FinData_long)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 3
+  Date      Stock Price
+  &lt;chr&gt;     &lt;chr&gt; &lt;dbl&gt;
+1 2/01/2002 MSFT   33.5
+2 2/01/2002 IBM   122. 
+3 2/01/2002 AAPL   11.6
+4 2/01/2002 MCD    26.5
+5 2/01/2002 PG     40  
+6 2/01/2002 GOOG   NA  </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>FinData_wide <span class="ot">=</span> <span class="fu">pivot_wider</span>(FinData_long, <span class="at">names_from =</span> Stock, <span class="at">values_from =</span> Price)</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(FinData_wide)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 7
+  Date       MSFT   IBM  AAPL   MCD    PG  GOOG
+  &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1 2/01/2002  33.5  122.  11.6  26.5  40      NA
+2 3/01/2002  34.6  124.  11.8  26.8  39.6    NA
+3 4/01/2002  34.4  126.  11.8  27.0  39.2    NA
+4 7/01/2002  34.3  124.  11.4  27.2  38.8    NA
+5 8/01/2002  34.7  125.  11.3  27.4  38.9    NA
+6 9/01/2002  34.4  124.  10.8  26.9  38.6    NA</code></pre>
+</div>
+</div>
+</section>
+<section id="summary-statistics" class="level2">
+<h2 class="anchored" data-anchor-id="summary-statistics">4.3 Summary Statistics</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># change the working directory to the folder containing data_fin.csv or provide</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="co"># the full path with the filename</span></span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>data_stocks <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"data/data_fin.csv"</span>)  <span class="co">#import data</span></span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data_stocks)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        Date     DJI   AXP   MMM   ATT    BA   CAT CISCO    DD   XOM    GE
+1  3/01/2000 11357.5 45.82 47.19 47.19 40.12 24.31 54.05 65.00 39.09 49.95
+2  4/01/2000 10997.9 44.09 45.31 44.25 40.12 24.00 51.00 65.00 38.41 48.06
+3  5/01/2000 11122.7 42.96 46.62 44.94 42.62 24.56 51.19 67.75 40.50 47.70
+4  6/01/2000 11253.3 43.78 50.62 43.75 43.06 25.81 50.00 71.50 42.59 48.51
+5  7/01/2000 11522.6 44.42 51.47 44.12 44.12 26.66 52.94 71.62 42.31 50.28
+6 10/01/2000 11572.2 45.04 51.12 44.75 43.69 25.78 54.91 70.00 41.88 50.37
+     GS    HD    IBM  INTC   JNJ   JPM   MRK   MCD  MSFT   NKE
+1 88.31 65.50 115.56 43.47 46.09 48.69 64.04 39.62 58.34 12.03
+2 82.38 61.50 112.06 41.47 44.41 47.27 61.61 38.81 56.31 11.38
+3 78.88 61.44 116.00 41.81 44.88 46.98 64.22 39.44 56.91 12.03
+4 82.25 60.00 114.62 39.38 46.28 47.65 64.75 38.88 55.00 11.97
+5 82.56 62.81 113.31 41.00 47.88 48.52 70.97 39.75 55.72 11.97
+6 84.38 63.19 118.44 42.88 47.03 47.69 68.89 40.06 56.12 12.17</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>DJI <span class="ot">=</span> data_stocks<span class="sc">$</span>DJI</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>DJI <span class="ot">=</span> <span class="fu">na.omit</span>(DJI)  <span class="co">#remove NAs as it will affect the calculations</span></span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Arithmetic mean</span></span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(DJI)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 11098.12</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Geometric mean</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a><span class="fu">exp</span>(<span class="fu">mean</span>(<span class="fu">log</span>(DJI)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 10953.39</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="co"># median</span></span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a><span class="fu">median</span>(DJI)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 10748.8</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="co"># variance &amp; standard deviation</span></span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a><span class="fu">var</span>(DJI)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3280347</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sd</span>(DJI)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 1811.173</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="co"># interquantile range and few quantiles</span></span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a><span class="fu">IQR</span>(DJI)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2276.25</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(DJI)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      0%      25%      50%      75%     100% 
+ 6547.10 10063.25 10748.80 12339.50 16576.66 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="co"># skewness and kurtosis skewness and kurtosis functions are not available in R</span></span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a><span class="co"># core library but in library e1071 (there are other packages which have</span></span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a><span class="co"># functions for skewness and kurtosis try ??kurtosis or search for the function</span></span>
+<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a><span class="co"># on RSearch.</span></span>
+<span id="cb67-5"><a href="#cb67-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(e1071)</span>
+<span id="cb67-6"><a href="#cb67-6" aria-hidden="true" tabindex="-1"></a><span class="fu">skewness</span>(DJI)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.4777828</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">kurtosis</span>(DJI)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.08404185</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="co"># summary of one column/variable in a dataframe</span></span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(DJI)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+   6547   10063   10749   11098   12340   16577 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="co"># summary of whole dataset excluding the time column</span></span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(data_stocks[, <span class="fu">c</span>(<span class="dv">2</span><span class="sc">:</span><span class="dv">21</span>)])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      DJI             AXP             MMM              ATT       
+ Min.   : 6547   Min.   :10.26   Min.   : 39.50   Min.   :19.34  
+ 1st Qu.:10063   1st Qu.:38.31   1st Qu.: 62.55   1st Qu.:25.54  
+ Median :10749   Median :47.49   Median : 77.67   Median :29.65  
+ Mean   :11098   Mean   :46.77   Mean   : 75.78   Mean   :31.77  
+ 3rd Qu.:12340   3rd Qu.:54.44   3rd Qu.: 85.55   3rd Qu.:37.22  
+ Max.   :16577   Max.   :90.73   Max.   :140.25   Max.   :58.50  
+ NA's   :27      NA's   :12      NA's   :12       NA's   :12     
+       BA              CAT             CISCO             DD       
+ Min.   : 25.06   Min.   : 14.91   Min.   : 8.60   Min.   :16.14  
+ 1st Qu.: 44.00   1st Qu.: 28.64   1st Qu.:17.68   1st Qu.:41.13  
+ Median : 63.56   Median : 57.10   Median :20.43   Median :44.53  
+ Mean   : 62.95   Mean   : 56.01   Mean   :23.41   Mean   :44.37  
+ 3rd Qu.: 74.90   3rd Qu.: 79.36   3rd Qu.:24.17   3rd Qu.:48.92  
+ Max.   :138.36   Max.   :116.20   Max.   :80.06   Max.   :71.62  
+ NA's   :12       NA's   :12       NA's   :13      NA's   :12     
+      XOM               GE              GS              HD       
+ Min.   : 30.27   Min.   : 6.66   Min.   : 52.0   Min.   :18.00  
+ 1st Qu.: 42.46   1st Qu.:20.00   1st Qu.: 92.2   1st Qu.:31.00  
+ Median : 64.77   Median :30.33   Median :116.2   Median :37.37  
+ Mean   : 63.20   Mean   :29.56   Mean   :126.9   Mean   :40.20  
+ 3rd Qu.: 81.62   3rd Qu.:36.03   3rd Qu.:159.5   3rd Qu.:46.23  
+ Max.   :101.51   Max.   :59.94   Max.   :247.9   Max.   :82.34  
+ NA's   :12       NA's   :12      NA's   :12      NA's   :12     
+      IBM              INTC            JNJ             JPM       
+ Min.   : 55.07   Min.   :12.08   Min.   :33.69   Min.   :15.45  
+ 1st Qu.: 87.82   1st Qu.:20.17   1st Qu.:55.27   1st Qu.:35.66  
+ Median :106.48   Median :22.76   Median :61.30   Median :40.20  
+ Mean   :118.83   Mean   :25.21   Mean   :61.07   Mean   :40.36  
+ 3rd Qu.:130.00   3rd Qu.:26.77   3rd Qu.:65.20   3rd Qu.:45.71  
+ Max.   :215.80   Max.   :74.88   Max.   :95.63   Max.   :65.70  
+ NA's   :12       NA's   :13      NA's   :12      NA's   :12     
+      MRK             MCD              MSFT            NKE       
+ Min.   :20.99   Min.   : 12.38   Min.   :15.15   Min.   : 6.64  
+ 1st Qu.:34.53   1st Qu.: 29.19   1st Qu.:25.67   1st Qu.:14.56  
+ Median :43.63   Median : 43.78   Median :27.59   Median :23.25  
+ Mean   :44.65   Mean   : 51.07   Mean   :28.38   Mean   :28.01  
+ 3rd Qu.:51.55   3rd Qu.: 70.36   3rd Qu.:30.19   3rd Qu.:36.90  
+ Max.   :89.85   Max.   :103.59   Max.   :58.34   Max.   :79.86  
+ NA's   :13      NA's   :12       NA's   :13      NA's   :12     </code></pre>
+</div>
+</div>
+<section id="example-descriptive-statistics-of-stock-returns" class="level3">
+<h3 class="anchored" data-anchor-id="example-descriptive-statistics-of-stock-returns">4.3.1 Example-Descriptive Statistics of Stock Returns</h3>
+<p>In this example we will use R to calcu</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>data_cs1 <span class="ot">=</span> <span class="fu">read.csv</span>(<span class="st">"C:/Users/tahsi/OneDrive/Documents/Materi Data Analitik/data_fin.csv"</span>)</span>
+<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data_cs1)  <span class="co">#check the imported data</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        Date     DJI   AXP   MMM   ATT    BA   CAT CISCO    DD   XOM    GE
+1  3/01/2000 11357.5 45.82 47.19 47.19 40.12 24.31 54.05 65.00 39.09 49.95
+2  4/01/2000 10997.9 44.09 45.31 44.25 40.12 24.00 51.00 65.00 38.41 48.06
+3  5/01/2000 11122.7 42.96 46.62 44.94 42.62 24.56 51.19 67.75 40.50 47.70
+4  6/01/2000 11253.3 43.78 50.62 43.75 43.06 25.81 50.00 71.50 42.59 48.51
+5  7/01/2000 11522.6 44.42 51.47 44.12 44.12 26.66 52.94 71.62 42.31 50.28
+6 10/01/2000 11572.2 45.04 51.12 44.75 43.69 25.78 54.91 70.00 41.88 50.37
+     GS    HD    IBM  INTC   JNJ   JPM   MRK   MCD  MSFT   NKE
+1 88.31 65.50 115.56 43.47 46.09 48.69 64.04 39.62 58.34 12.03
+2 82.38 61.50 112.06 41.47 44.41 47.27 61.61 38.81 56.31 11.38
+3 78.88 61.44 116.00 41.81 44.88 46.98 64.22 39.44 56.91 12.03
+4 82.25 60.00 114.62 39.38 46.28 47.65 64.75 38.88 55.00 11.97
+5 82.56 62.81 113.31 41.00 47.88 48.52 70.97 39.75 55.72 11.97
+6 84.38 63.19 118.44 42.88 47.03 47.69 68.89 40.06 56.12 12.17</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="co"># selecting first 10 price series including the data column</span></span>
+<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a>data_cs1<span class="fl">.1</span> <span class="ot">=</span> data_cs1[, <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">11</span>)]</span>
+<span id="cb77-3"><a href="#cb77-3" aria-hidden="true" tabindex="-1"></a><span class="co"># data cleaning-remove NAs</span></span>
+<span id="cb77-4"><a href="#cb77-4" aria-hidden="true" tabindex="-1"></a>data_cs1<span class="fl">.1</span> <span class="ot">=</span> <span class="fu">na.omit</span>(data_cs1<span class="fl">.1</span>)</span>
+<span id="cb77-5"><a href="#cb77-5" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(data_cs1<span class="fl">.1</span>)  <span class="co"># see the columns present in the data</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "Date"  "DJI"   "AXP"   "MMM"   "ATT"   "BA"    "CAT"   "CISCO" "DD"   
+[10] "XOM"   "GE"   </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(data_cs1<span class="fl">.1</span>)  <span class="co">#notice the Date variable</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     Date                DJI             AXP             MMM        
+ Length:3523        Min.   : 6547   Min.   :10.26   Min.   : 39.50  
+ Class :character   1st Qu.:10063   1st Qu.:38.38   1st Qu.: 62.55  
+ Mode  :character   Median :10749   Median :47.60   Median : 77.67  
+                    Mean   :11098   Mean   :46.83   Mean   : 75.80  
+                    3rd Qu.:12340   3rd Qu.:54.50   3rd Qu.: 85.61  
+                    Max.   :16577   Max.   :90.73   Max.   :140.25  
+      ATT              BA              CAT             CISCO      
+ Min.   :19.34   Min.   : 25.06   Min.   : 14.91   Min.   : 8.60  
+ 1st Qu.:25.54   1st Qu.: 44.02   1st Qu.: 28.48   1st Qu.:17.68  
+ Median :29.76   Median : 63.61   Median : 57.11   Median :20.39  
+ Mean   :31.79   Mean   : 62.99   Mean   : 56.03   Mean   :23.42  
+ 3rd Qu.:37.23   3rd Qu.: 74.95   3rd Qu.: 79.50   3rd Qu.:24.18  
+ Max.   :58.50   Max.   :138.36   Max.   :116.20   Max.   :80.06  
+       DD             XOM               GE       
+ Min.   :16.14   Min.   : 30.27   Min.   : 6.66  
+ 1st Qu.:41.17   1st Qu.: 42.41   1st Qu.:20.04  
+ Median :44.58   Median : 64.70   Median :30.37  
+ Mean   :44.43   Mean   : 63.18   Mean   :29.63  
+ 3rd Qu.:48.93   3rd Qu.: 81.70   3rd Qu.:36.05  
+ Max.   :71.62   Max.   :101.51   Max.   :59.94  </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="co"># check class of dates which will be factor ( treated as factor by default)\t</span></span>
+<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(data_cs1<span class="fl">.1</span><span class="sc">$</span>Date)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "character"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="co"># convert dates to class Date</span></span>
+<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a>data_cs1<span class="fl">.1</span><span class="sc">$</span>Date <span class="ot">=</span> <span class="fu">as.Date</span>(data_cs1<span class="fl">.1</span><span class="sc">$</span>Date, <span class="at">format =</span> <span class="st">"%d/%m/%Y"</span>)</span>
+<span id="cb83-3"><a href="#cb83-3" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(data_cs1<span class="fl">.1</span><span class="sc">$</span>Date)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Date"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(data_cs1<span class="fl">.1</span>)  <span class="co">#notice the Date variable</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      Date                 DJI             AXP             MMM        
+ Min.   :2000-01-03   Min.   : 6547   Min.   :10.26   Min.   : 39.50  
+ 1st Qu.:2003-07-08   1st Qu.:10063   1st Qu.:38.38   1st Qu.: 62.55  
+ Median :2007-01-05   Median :10749   Median :47.60   Median : 77.67  
+ Mean   :2007-01-03   Mean   :11098   Mean   :46.83   Mean   : 75.80  
+ 3rd Qu.:2010-07-06   3rd Qu.:12340   3rd Qu.:54.50   3rd Qu.: 85.61  
+ Max.   :2014-01-03   Max.   :16577   Max.   :90.73   Max.   :140.25  
+      ATT              BA              CAT             CISCO      
+ Min.   :19.34   Min.   : 25.06   Min.   : 14.91   Min.   : 8.60  
+ 1st Qu.:25.54   1st Qu.: 44.02   1st Qu.: 28.48   1st Qu.:17.68  
+ Median :29.76   Median : 63.61   Median : 57.11   Median :20.39  
+ Mean   :31.79   Mean   : 62.99   Mean   : 56.03   Mean   :23.42  
+ 3rd Qu.:37.23   3rd Qu.: 74.95   3rd Qu.: 79.50   3rd Qu.:24.18  
+ Max.   :58.50   Max.   :138.36   Max.   :116.20   Max.   :80.06  
+       DD             XOM               GE       
+ Min.   :16.14   Min.   : 30.27   Min.   : 6.66  
+ 1st Qu.:41.17   1st Qu.: 42.41   1st Qu.:20.04  
+ Median :44.58   Median : 64.70   Median :30.37  
+ Mean   :44.43   Mean   : 63.18   Mean   :29.63  
+ 3rd Qu.:48.93   3rd Qu.: 81.70   3rd Qu.:36.05  
+ Max.   :71.62   Max.   :101.51   Max.   :59.94  </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a>d2 <span class="ot">=</span> <span class="fu">as.data.frame</span>(<span class="fu">sapply</span>(data_cs1<span class="fl">.1</span>[<span class="dv">2</span><span class="sc">:</span><span class="dv">11</span>], <span class="cf">function</span>(x) <span class="fu">diff</span>(<span class="fu">log</span>(x)) <span class="sc">*</span> <span class="dv">100</span>))  <span class="co">#note it will be one less</span></span>
+<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a><span class="co"># create a different dataframe with returns</span></span>
+<span id="cb87-3"><a href="#cb87-3" aria-hidden="true" tabindex="-1"></a>data_stocks_ret <span class="ot">=</span> <span class="fu">as.data.frame</span>(<span class="fu">cbind</span>(<span class="at">Date =</span> data_cs1<span class="fl">.1</span><span class="sc">$</span>Date[<span class="dv">2</span><span class="sc">:</span><span class="fu">length</span>(data_cs1<span class="fl">.1</span><span class="sc">$</span>Date)],</span>
+<span id="cb87-4"><a href="#cb87-4" aria-hidden="true" tabindex="-1"></a>    d2), <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span>, <span class="at">row.names =</span> <span class="cn">NULL</span>)</span>
+<span id="cb87-5"><a href="#cb87-5" aria-hidden="true" tabindex="-1"></a><span class="co"># visual inspection</span></span>
+<span id="cb87-6"><a href="#cb87-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(data_stocks_ret)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        Date        DJI        AXP        MMM        ATT         BA       CAT
+1 2000-01-04 -3.2173973 -3.8487678 -4.0654247 -6.4326634  0.0000000 -1.283396
+2 2000-01-05  1.1283720 -2.5963549  2.8501875  1.5472895  6.0448664  2.306527
+3 2000-01-06  1.1673354  1.8907642  8.2317122 -2.6836654  1.0270865  4.964291
+4 2000-01-07  2.3648905  1.4512726  1.6652359  0.8421582  2.4318702  3.240230
+5 2000-01-10  0.4295346  1.3861165 -0.6823304  1.4178250 -0.9793951 -3.356532
+6 2000-01-11 -0.5293883  0.9061837 -1.7165263 -1.4178250 -1.8713726 -1.563754
+       CISCO         DD        XOM         GE
+1 -5.8083911  0.0000000 -1.7548837 -3.8572275
+2  0.3718568  4.1437190  5.2984132 -0.7518832
+3 -2.3521195  5.3872990  5.0317510  1.6838564
+4  5.7136191  0.1676915 -0.6596019  3.5837421
+5  3.6536284 -2.2879123 -1.0215079  0.1788376
+6 -3.0697677 -1.8018506  1.1868167  0.2379537</code></pre>
+</div>
+</div>
+<section id="using-the-describe-function" class="level4">
+<h4 class="anchored" data-anchor-id="using-the-describe-function">4.3.1.1 Using the Describe function</h4>
+<p>The package psych comes with a function called which generated the descriptive statistics for all the data vectors (columns) in a data frame, mwe will use R to calcu</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(psych)  <span class="co">#load the required package</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'psych' was built under R version 4.3.1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="fu">args</span>(describe)  <span class="co">#arguments for describe function</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>function (x, na.rm = TRUE, interp = FALSE, skew = TRUE, ranges = TRUE, 
+    trim = 0.1, type = 3, check = TRUE, fast = NULL, quant = NULL, 
+    IQR = FALSE, omit = FALSE, data = NULL) 
+NULL</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="co"># use describe to calculate descriptive stats for data_cs1.1r</span></span>
+<span id="cb93-2"><a href="#cb93-2" aria-hidden="true" tabindex="-1"></a>desc1 <span class="ot">=</span> <span class="fu">describe</span>(data_stocks_ret[, <span class="dv">2</span><span class="sc">:</span><span class="dv">11</span>])  <span class="co">#note we dont pass the date column</span></span>
+<span id="cb93-3"><a href="#cb93-3" aria-hidden="true" tabindex="-1"></a><span class="co"># check the output</span></span>
+<span id="cb93-4"><a href="#cb93-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(desc1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    vars    n  mean   sd median trimmed  mad    min   max range  skew kurtosis
+DJI    1 3522  0.01 1.23   0.04    0.03 0.82  -8.20 10.51 18.71 -0.06     7.71
+AXP    2 3522  0.02 2.89   0.02    0.03 1.55 -19.35 18.77 38.12 -0.01     9.14
+MMM    3 3522  0.03 1.55   0.03    0.03 1.10  -9.38 10.39 19.78  0.06     4.87
+ATT    4 3522 -0.01 1.80   0.03    0.01 1.22 -13.54 15.08 28.62  0.02     6.26
+BA     5 3522  0.03 2.01   0.05    0.06 1.57 -19.39 14.38 33.77 -0.26     5.39
+CAT    6 3522  0.04 2.14   0.04    0.05 1.65 -15.69 13.73 29.42 -0.08     4.08
+      se
+DJI 0.02
+AXP 0.05
+MMM 0.03
+ATT 0.03
+BA  0.03
+CAT 0.04</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a><span class="co"># the above output is in long format, we can transpose it get column format</span></span>
+<span id="cb95-2"><a href="#cb95-2" aria-hidden="true" tabindex="-1"></a>desc1.t <span class="ot">=</span> <span class="fu">t</span>(desc1)</span>
+<span id="cb95-3"><a href="#cb95-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(desc1.t)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                 DJI          AXP          MMM           ATT           BA
+vars    1.000000e+00 2.000000e+00 3.000000e+00  4.000000e+00 5.000000e+00
+n       3.522000e+03 3.522000e+03 3.522000e+03  3.522000e+03 3.522000e+03
+mean    1.055257e-02 1.908563e-02 3.056011e-02 -8.647491e-03 3.499777e-02
+sd      1.226702e+00 2.892586e+00 1.551706e+00  1.799180e+00 2.013123e+00
+median  4.442671e-02 1.723604e-02 3.233787e-02  3.018428e-02 5.279680e-02
+trimmed 2.597511e-02 3.152635e-02 3.241946e-02  9.134423e-03 5.567097e-02
+                 CAT         CISCO            DD          XOM            GE
+vars    6.000000e+00  7.000000e+00  8.000000e+00 9.000000e+00  1.000000e+01
+n       3.522000e+03  3.522000e+03  3.522000e+03 3.522000e+03  3.522000e+03
+mean    3.710732e-02 -2.554732e-02 -5.379787e-04 2.653014e-02 -1.696661e-02
+sd      2.143040e+00  2.744068e+00  1.881993e+00 1.629181e+00  2.057353e+00
+median  4.291300e-02  3.800312e-02  0.000000e+00 5.437650e-02  0.000000e+00
+trimmed 4.678016e-02 -1.339579e-04  1.469270e-03 4.883990e-02  9.841473e-05</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb97"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb97-1"><a href="#cb97-1" aria-hidden="true" tabindex="-1"></a><span class="fu">require</span>(pastecs)  <span class="co"># note library and require can both be used to include a package</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: pastecs</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: package 'pastecs' was built under R version 4.3.1</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'pastecs'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:tidyr':
+
+    extract</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb102"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb102-1"><a href="#cb102-1" aria-hidden="true" tabindex="-1"></a><span class="co"># detach the package pastecs its useful to avoid any conflicts (e.g psych and</span></span>
+<span id="cb102-2"><a href="#cb102-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Hmisc have 'describe' function with two different behaviours</span></span>
+<span id="cb102-3"><a href="#cb102-3" aria-hidden="true" tabindex="-1"></a><span class="fu">detach</span>(<span class="st">"package:psych"</span>, <span class="at">unload =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb102-4"><a href="#cb102-4" aria-hidden="true" tabindex="-1"></a><span class="co"># use stat.desc in with default arguments</span></span>
+<span id="cb102-5"><a href="#cb102-5" aria-hidden="true" tabindex="-1"></a>desc2 <span class="ot">=</span> <span class="fu">stat.desc</span>(data_stocks_ret[, <span class="dv">2</span><span class="sc">:</span><span class="dv">11</span>], <span class="at">norm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb102-6"><a href="#cb102-6" aria-hidden="true" tabindex="-1"></a>desc2  <span class="co">#note skewness/kurtosis</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                       DJI           AXP           MMM           ATT
+nbr.val       3.522000e+03  3.522000e+03  3.522000e+03  3.522000e+03
+nbr.null      2.000000e+00  2.400000e+01  3.000000e+01  5.000000e+01
+nbr.na        0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+min          -8.200737e+00 -1.935233e+01 -9.383688e+00 -1.353821e+01
+max           1.050812e+01  1.877116e+01  1.039309e+01  1.508318e+01
+range         1.870886e+01  3.812349e+01  1.977678e+01  2.862139e+01
+sum           3.716616e+01  6.721959e+01  1.076327e+02 -3.045646e+01
+median        4.442671e-02  1.723604e-02  3.233787e-02  3.018428e-02
+mean          1.055257e-02  1.908563e-02  3.056011e-02 -8.647491e-03
+SE.mean       2.067018e-02  4.874068e-02  2.614656e-02  3.031656e-02
+CI.mean.0.95  4.052675e-02  9.556282e-02  5.126395e-02  5.943979e-02
+var           1.504798e+00  8.367052e+00  2.407790e+00  3.237048e+00
+std.dev       1.226702e+00  2.892586e+00  1.551706e+00  1.799180e+00
+coef.var      1.162467e+02  1.515583e+02  5.077551e+01 -2.080580e+02
+skewness     -5.829983e-02 -6.689750e-03  5.927112e-02  1.620418e-02
+skew.2SE     -7.065472e-01 -8.107441e-02  7.183185e-01  1.963817e-01
+kurtosis      7.714304e+00  9.141053e+00  4.865294e+00  6.257155e+00
+kurt.2SE      4.675883e+01  5.540681e+01  2.949008e+01  3.792659e+01
+normtest.W    9.187712e-01  8.496717e-01  9.384591e-01  9.298653e-01
+normtest.p    5.671566e-40  1.020339e-49  6.131053e-36  8.237017e-38
+                        BA           CAT         CISCO            DD
+nbr.val       3.522000e+03  3.522000e+03  3.522000e+03  3.522000e+03
+nbr.null      1.500000e+01  2.400000e+01  5.000000e+01  2.900000e+01
+nbr.na        0.000000e+00  0.000000e+00  0.000000e+00  0.000000e+00
+min          -1.938931e+01 -1.568589e+01 -1.768649e+01 -1.202802e+01
+max           1.437774e+01  1.373497e+01  2.182386e+01  1.085590e+01
+range         3.376704e+01  2.942086e+01  3.951034e+01  2.288392e+01
+sum           1.232621e+02  1.306920e+02 -8.997766e+01 -1.894761e+00
+median        5.279680e-02  4.291300e-02  3.800312e-02  0.000000e+00
+mean          3.499777e-02  3.710732e-02 -2.554732e-02 -5.379787e-04
+SE.mean       3.392155e-02  3.611067e-02  4.623812e-02  3.171197e-02
+CI.mean.0.95  6.650788e-02  7.079996e-02  9.065621e-02  6.217570e-02
+var           4.052665e+00  4.592620e+00  7.529907e+00  3.541897e+00
+std.dev       2.013123e+00  2.143040e+00  2.744068e+00  1.881993e+00
+coef.var      5.752148e+01  5.775248e+01 -1.074112e+02 -3.498266e+03
+skewness     -2.605203e-01 -8.369997e-02  1.547891e-01 -1.523353e-01
+skew.2SE     -3.157298e+00 -1.014377e+00  1.875920e+00 -1.846181e+00
+kurtosis      5.392404e+00  4.077013e+00  7.329406e+00  5.061290e+00
+kurt.2SE      3.268507e+01  2.471206e+01  4.442585e+01  3.067808e+01
+normtest.W    9.550329e-01  9.583075e-01  9.104004e-01  9.381393e-01
+normtest.p    1.196739e-31  1.172506e-30  1.882675e-41  5.179385e-36
+                       XOM            GE
+nbr.val       3.522000e+03  3.522000e+03
+nbr.null      2.900000e+01  6.300000e+01
+nbr.na        0.000000e+00  0.000000e+00
+min          -1.502710e+01 -1.368410e+01
+max           1.586307e+01  1.798444e+01
+range         3.089017e+01  3.166854e+01
+sum           9.343915e+01 -5.975640e+01
+median        5.437650e-02  0.000000e+00
+mean          2.653014e-02 -1.696661e-02
+SE.mean       2.745205e-02  3.466683e-02
+CI.mean.0.95  5.382353e-02  6.796911e-02
+var           2.654232e+00  4.232702e+00
+std.dev       1.629181e+00  2.057353e+00
+coef.var      6.140870e+01 -1.212589e+02
+skewness      4.651513e-02  1.102593e-02
+skew.2SE      5.637262e-01  1.336254e-01
+kurtosis      1.043194e+01  7.781017e+00
+kurt.2SE      6.323129e+01  4.716320e+01
+normtest.W    9.160764e-01  9.046828e-01
+normtest.p    1.839459e-40  2.126284e-42</code></pre>
+</div>
+</div>
+</section>
+</section>
+</section>
+<section id="tu-ahajaja-mama" class="level1">
+<h1>Tu ahajaja mama</h1>
+<p>xkkmxkhe Seine is a 777-kilometre-long (483 mi) river in northern France. Its drainage basin is in the Paris Basin (a geological relative lowland) covering most of northern France. It rises at Source-Seine, 30 kilometres (19 mi) northwest of Dijon in northeastern France in the Langres plateau, flowing through Paris … See more skmks</p>
+<section id="ajaamm" class="level2">
+<h2 class="anchored" data-anchor-id="ajaamm">ajaamm</h2>
+<p>shshshe Seine is a 777-kilometre-long (483 mi) river in northern France. Its drainage basin is in the Paris Basin (a geological relative lowland) covering most of northern France. It rises at Source-Seine, 30 kilometres (19 mi) northwest of Dijon in northeastern France in the Langres plateau, flowing through Paris … See more he Seine is a 777-kilometre-long (483 mi) river in northern France. Its drainage basin is in the Paris Basin (a geological relative lowland) covering most of northern France. It rises at Source-Seine, 30 kilometres (19 mi) northwest of Dijon in northeastern France in the Langres plateau, flowing through Paris … See more</p>
+<p>he Seine is a 777-kilometre-long (483 mi) river in northern France. Its drainage basin is in the Paris Basin (a geological relative lowland) covering most of northern France. It rises at Source-Seine, 30 kilometres (19 mi) northwest of Dijon in northeastern France in the Langres plateau, flowing through Paris … See more</p>
+<p>he Seine is a 777-kilometre-long (483 mi) river in northern France. Its drainage basin is in the Paris Basin (a geological relative lowland) covering most of northern France. It rises at Source-Seine, 30 kilometres (19 mi) northwest of Dijon in northeastern France in the Langres plateau, flowing through Paris … See more</p>
+</section>
+</section>
+<section id="tu-ahajaja-mama-1" class="level1">
+<h1>2 Tu ahajaja mama</h1>
+<p>he Seine is a 777-kilometre-long (483 mi) river in northern France. Its drainage basin is in the Paris Basin (a geological relative lowland) covering most of northern France. It rises at Source-Seine, 30 kilometres (19 mi) northwest of Dijon in northeastern France in the Langres plateau, flowing through Paris … See morehe Seine is a 777-kilometre-long (483 mi) river in northern France. Its drainage basin is in the Paris Basin (a geological relative lowland) covering most of northern France. It rises at Source-Seine, 30 kilometres (19 mi) northwest of Dijon in northeastern France in the Langres plateau, flowing through Paris … See more xkkmxk skmks</p>
+<section id="ajaamm-1" class="level2">
+<h2 class="anchored" data-anchor-id="ajaamm-1">2.1 ajaamm</h2>
+<p>zjz</p>
+
+
+</section>
+</section>
+
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">Copyright 2021, Norah Jones</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+</body></html>
